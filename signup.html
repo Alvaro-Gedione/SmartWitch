@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartWitch - Criar Conta</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #5d2751;
+            --secondary: #b13e53;
+            --accent: #ef7d57;
+            --dark: #1a1a2e;
+            --light: #f8f1ff;
+        }
+        
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            background-color: var(--dark);
+            color: var(--light);
+            background-image: url('https://www.transparenttextures.com/patterns/black-paper.png');
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .magic-font {
+            font-family: 'Cinzel Decorative', cursive;
+        }
+        
+        .register-card {
+            background: rgba(29, 29, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--secondary);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(239, 125, 87, 0.3);
+            width: 400px;
+        }
+        
+        .register-card:hover {
+            box-shadow: 0 10px 25px rgba(239, 125, 87, 0.5);
+            border-color: var(--accent);
+        }
+        
+        .input-field {
+            margin-bottom: 1.5rem;
+        }
+        
+        .input-field input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--secondary);
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--light);
+        }
+        
+        .input-field input:focus {
+            outline: none;
+            border-color: var(--accent);
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .register-button {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: var(--light);
+            padding: 0.75rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+            width: 100%;
+        }
+        
+        .register-button:hover {
+            background: linear-gradient(to right, var(--secondary), var(--primary));
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .login-link a {
+            color: var(--accent);
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-card">
+        <h1 class="magic-font text-3xl text-center mb-4">Criar Conta</h1>
+        <div class="input-field">
+            <input type="text" placeholder="Nome de Usuário" required>
+        </div>
+        <div class="input-field">
+            <input type="email" placeholder="Email" required>
+        </div>
+        <div class="input-field">
+            <input type="password" placeholder="Senha" required>
+        </div>
+        <div class="input-field">
+            <input type="password" placeholder="Confirmar Senha" required>
+        </div>
+        <button class="register-button">
+            <i class="fas fa-user-plus mr-2"></i> Criar Conta
+        </button>
+        <div class="login-link">
+            <p>Já tem uma conta? <a href="login.html">Faça login aqui</a></p>
+        </div>
+    </div>
+</body>
+</html>
