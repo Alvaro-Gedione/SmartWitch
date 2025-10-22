@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartWitch - Magia Interativa</title>
+    <link rel="icon" href="src/Img/Logo.png" type="image/png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -24,6 +25,7 @@
             background-image: url('https://www.transparenttextures.com/patterns/black-paper.png');
             min-height: 100vh;
             overflow-x: hidden;
+            padding-top: 56px; /* Ajuste para a altura da navbar */
         }
         
         .magic-font {
@@ -135,13 +137,44 @@
             background-color: var(--secondary);
             border-radius: 10px;
         }
+
+        /* Estilos adicionados para a logo circular */
+        .logo-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--accent);
+            box-shadow: 0 0 10px rgba(239, 125, 87, 0.5);
+        }
+        
+        .logo-circle-large {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--accent);
+            box-shadow: 0 0 15px rgba(239, 125, 87, 0.7);
+        }
+
+        /* Estilos para o menu de filtro */
+        .filter-dropdown {
+            position: absolute;
+            right: 0;
+            top: 100%; /* Posiciona abaixo do botão */
+            background-color: var(--dark);
+            border: 1px solid var(--secondary);
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            padding: 1rem;
+            z-index: 30; /* Acima de outros conteúdos */
+            width: 250px;
+        }
     </style>
 </head>
 <body>
-    <!-- Particle Background -->
     <div id="particles-js"></div>
     
-    <!-- Spell Animations -->
     <div id="spell-animations">
         <div class="spell-animation" id="lumos-anim">
             <div class="absolute inset-0 bg-yellow-200 opacity-30"></div>
@@ -151,16 +184,74 @@
             <div class="absolute top-0 left-1/2 w-1 h-1/2 bg-red-500 rounded-full filter blur-sm" style="transform: rotate(45deg); transform-origin: top center;"></div>
             <div class="absolute top-0 left-1/2 w-1 h-1/2 bg-red-500 rounded-full filter blur-sm" style="transform: rotate(-45deg); transform-origin: top center;"></div>
         </div>
+         <div class="spell-animation" id="finite-incantatem-anim">
+            <div class="absolute inset-0 bg-gray-500 opacity-20"></div>
+            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-24 h-24 border-4 border-gray-400 rounded-full animate-ping"></div>
+        </div>
+        <div class="spell-animation" id="protego-anim">
+            <div class="absolute inset-0 bg-blue-500 opacity-20 rounded-full animate-expand"></div>
+        </div>
+        <div class="spell-animation" id="reparo-anim">
+            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-green-500 rounded-full filter blur-md animate-pulse"></div>
+            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-3xl font-bold animate-fade-in-out">✨</div>
+        </div>
     </div>
     
-    <!-- Main Container -->
+    <nav class="fixed top-0 w-full bg-dark px-4 py-3 flex justify-between items-center shadow-lg z-20">
+        <div class="flex items-center">
+            <div class="relative w-10 h-10 mr-2">
+                <img src="src/Img/Logo.png" alt="SmartWitch Logo" class="logo-circle w-full h-full">
+            </div>
+            <h1 class="magic-font text-3xl bg-gradient-to-r from-purple-500 via-pink-500 to-yellow-500 bg-clip-text text-transparent">SmartWitch</h1>
+        </div>
+        <div class="flex items-center space-x-4">
+            <button class="relative text-gray-300 hover:text-white transition-colors p-2 rounded-full hover:bg-gray-700">
+                <i class="fas fa-bell text-xl"></i>
+                <span class="absolute top-1 right-1 h-3 w-3 bg-red-500 rounded-full border border-dark"></span>
+            </button>
+            <div class="relative">
+                <button id="profile-menu-btn" class="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors p-2 rounded-full hover:bg-gray-700 focus:outline-none">
+                    <div class="w-10 h-10 rounded-full bg-purple-700 flex items-center justify-center text-xl font-bold">
+                        BR
+                    </div>
+                    <i class="fas fa-chevron-down text-sm"></i>
+                </button>
+                <div id="profile-dropdown" class="absolute right-0 mt-2 w-64 bg-gray-800 rounded-lg shadow-xl py-2 hidden">
+                    <div class="px-4 py-2 text-white border-b border-gray-700">
+                        <p class="font-semibold">Bruxo(a) Teste</p>
+                        <p class="text-sm text-gray-400">Nível: Iniciante</p>
+                    </div>
+                    <a href="#" class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white">
+                        <i class="fas fa-bolt mr-3"></i>
+                        Energia da Varinha:
+                        <div class="ml-2 bg-gray-700 rounded-full h-2 w-24 relative overflow-hidden">
+                            <div class="bg-yellow-400 h-full rounded-full" style="width: 85%;"></div>
+                            <span class="absolute top-0 left-0 w-full h-full flex justify-center items-center text-xs text-gray-900 font-semibold">85%</span>
+                        </div>
+                    </a>
+                    <a href="#" class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white">
+                        <i class="fas fa-cog mr-3"></i>
+                        Configurações
+                    </a>
+                    <a href="#" class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white">
+                        <i class="fas fa-info-circle mr-3"></i>
+                        Sobre
+                    </a>
+                    <a href="#" class="flex items-center px-4 py-2 text-red-400 hover:bg-gray-700 hover:text-red-300">
+                        <i class="fas fa-sign-out-alt mr-3"></i>
+                        Sair
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
     <div class="container mx-auto px-4 py-8 relative z-10">
-        <!-- Header -->
         <header class="flex flex-col items-center mb-12">
-            <div class="flex items-center justify-center mb-6">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-16 h-16 text-yellow-400 mr-4">
-                    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" class="wand-path"></path>
-                </svg>
+            <div class="flex flex-col items-center mb-6">
+                <div class="relative w-24 h-24 mb-4">
+                    <img src="src/Img/Logo.png" alt="SmartWitch Logo" class="logo-circle-large w-full h-full">
+                </div>
                 <h1 class="magic-font text-5xl md:text-6xl text-center bg-gradient-to-r from-purple-500 via-pink-500 to-yellow-500 bg-clip-text text-transparent">
                     SmartWitch
                 </h1>
@@ -178,9 +269,7 @@
             </div>
         </header>
         
-        <!-- Main Content -->
         <main>
-            <!-- Tabs Navigation -->
             <div class="flex border-b border-gray-700 mb-8">
                 <button class="tab-btn px-6 py-3 text-lg font-semibold text-gray-300 hover:text-white transition-all tab-active" data-tab="spell-library">
                     Biblioteca de Feitiços
@@ -193,141 +282,64 @@
                 </button>
             </div>
             
-            <!-- Tab Contents -->
             <div id="tab-contents">
-                <!-- Spell Library Tab -->
                 <div id="spell-library" class="tab-content active">
                     <div class="mb-8">
-                        <div class="relative">
-                            <input type="text" placeholder="Procurar feitiços..." class="w-full px-6 py-4 bg-gray-800 bg-opacity-70 border border-gray-700 rounded-full focus:outline-none focus:ring-2 focus:ring-purple-500 pl-12">
+                        <div class="relative flex items-center">
+                            <input type="text" id="spell-search" placeholder="Procurar feitiços..." class="w-full px-6 py-4 bg-gray-800 bg-opacity-70 border border-gray-700 rounded-full focus:outline-none focus:ring-2 focus:ring-purple-500 pl-12 pr-12">
                             <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                            <button id="filter-btn" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white p-2 rounded-full hover:bg-gray-700">
+                                <i class="fas fa-filter text-xl"></i>
+                            </button>
+                            <div id="filter-dropdown" class="filter-dropdown hidden">
+                                <h3 class="font-bold text-lg mb-4 text-white">Filtrar Feitiços</h3>
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium mb-2">Tipo de Feitiço</label>
+                                    <select id="filter-type" class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                                        <option value="">Todos</option>
+                                        <option value="Luz">Luz</option>
+                                        <option value="Duelo">Duelo</option>
+                                        <option value="Transfiguração">Transfiguração</option>
+                                        <option value="Defesa">Defesa</option>
+                                        <option value="Utilidade">Utilidade</option>
+                                        <option value="Maldição">Maldição</option>
+                                        <option value="Encantamento">Encantamento</option>
+                                    </select>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium mb-2">Dificuldade</label>
+                                    <select id="filter-difficulty" class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                                        <option value="">Todas</option>
+                                        <option value="Fácil">Fácil</option>
+                                        <option value="Médio">Médio</option>
+                                        <option value="Difícil">Difícil</option>
+                                    </select>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium mb-2">Ordenação</label>
+                                    <select id="sort-order" class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                                        <option value="asc">A-Z</option>
+                                        <option value="desc">Z-A</option>
+                                    </select>
+                                </div>
+                                <button id="apply-filters-btn" class="w-full px-4 py-2 bg-purple-600 rounded-md text-white font-semibold hover:bg-purple-700 transition-colors">
+                                    Aplicar Filtros
+                                </button>
+                            </div>
                         </div>
                     </div>
                     
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <!-- Spell Card 1 -->
-                        <div class="spell-card rounded-lg p-6 cursor-pointer" data-spell="lumos">
-                            <div class="flex items-start mb-4">
-                                <div class="bg-yellow-500 bg-opacity-20 p-3 rounded-full mr-4 w-12 h-12 flex items-center justify-center">
-                                    <i class="fas fa-lightbulb text-yellow-400 text-xl"></i>
-                                </div>
-                                <div>
-                                    <h3 class="text-xl font-bold magic-font">Lumos</h3>
-                                    <p class="text-sm text-gray-300">Feitiço de Iluminação</p>
-                                </div>
-                            </div>
-                            <p class="text-gray-300 mb-4">Ilumina a ponta da varinha, fornecendo luz em ambientes escuros.</p>
-                            <div class="flex justify-between items-center">
-                                <span class="text-xs px-3 py-1 bg-gray-700 rounded-full">Luz</span>
-                                <button class="cast-spell-btn px-4 py-2 bg-purple-600 rounded-full text-sm hover:bg-purple-700 transition-colors">
-                                    Lançar Feitiço
-                                </button>
-                            </div>
+                    <div id="spell-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         </div>
-                        
-                        <!-- Spell Card 2 -->
-                        <div class="spell-card rounded-lg p-6 cursor-pointer" data-spell="expelliarmus">
-                            <div class="flex items-start mb-4">
-                                <div class="bg-red-500 bg-opacity-20 p-3 rounded-full mr-4 w-12 h-12 flex items-center justify-center">
-                                    <i class="fas fa-hand-paper text-red-400 text-xl"></i>
-                                </div>
-                                <div>
-                                    <h3 class="text-xl font-bold magic-font">Expelliarmus</h3>
-                                    <p class="text-sm text-gray-300">Feitiço de Desarme</p>
-                                </div>
+
+                    <div id="pagination" class="flex justify-center items-center mt-8 space-x-2">
+                        <button id="prev-page" class="px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">&lt;&lt;</button>
+                        <div id="page-numbers" class="flex space-x-1">
                             </div>
-                            <p class="text-gray-300 mb-4">Desarma o oponente, fazendo com que qualquer objeto que esteja segurando seja arremessado para longe.</p>
-                            <div class="flex justify-between items-center">
-                                <span class="text-xs px-3 py-1 bg-gray-700 rounded-full">Duelo</span>
-                                <button class="cast-spell-btn px-4 py-2 bg-purple-600 rounded-full text-sm hover:bg-purple-700 transition-colors">
-                                    Lançar Feitiço
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <!-- Spell Card 3 -->
-                        <div class="spell-card rounded-lg p-6 cursor-pointer" data-spell="wingardium-leviosa">
-                            <div class="flex items-start mb-4">
-                                <div class="bg-blue-500 bg-opacity-20 p-3 rounded-full mr-4 w-12 h-12 flex items-center justify-center">
-                                    <i class="fas fa-feather-alt text-blue-400 text-xl"></i>
-                                </div>
-                                <div>
-                                    <h3 class="text-xl font-bold magic-font">Wingardium Leviosa</h3>
-                                    <p class="text-sm text-gray-300">Feitiço de Levitação</p>
-                                </div>
-                            </div>
-                            <p class="text-gray-300 mb-4">Faz objetos levitarem e flutuarem no ar quando a varinha é movida com um suave movimento de balanço.</p>
-                            <div class="flex justify-between items-center">
-                                <span class="text-xs px-3 py-1 bg-gray-700 rounded-full">Transfiguração</span>
-                                <button class="cast-spell-btn px-4 py-2 bg-purple-600 rounded-full text-sm hover:bg-purple-700 transition-colors">
-                                    Lançar Feitiço
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <!-- Spell Card 4 -->
-                        <div class="spell-card rounded-lg p-6 cursor-pointer" data-spell="alohomora">
-                            <div class="flex items-start mb-4">
-                                <div class="bg-green-500 bg-opacity-20 p-3 rounded-full mr-4 w-12 h-12 flex items-center justify-center">
-                                    <i class="fas fa-unlock text-green-400 text-xl"></i>
-                                </div>
-                                <div>
-                                    <h3 class="text-xl font-bold magic-font">Alohomora</h3>
-                                    <p class="text-sm text-gray-300">Feitiço de Destrancamento</p>
-                                </div>
-                            </div>
-                            <p class="text-gray-300 mb-4">Abre fechaduras e portas trancadas quando a varinha é girada no sentido horário.</p>
-                            <div class="flex justify-between items-center">
-                                <span class="text-xs px-3 py-1 bg-gray-700 rounded-full">Utilidade</span>
-                                <button class="cast-spell-btn px-4 py-2 bg-purple-600 rounded-full text-sm hover:bg-purple-700 transition-colors">
-                                    Lançar Feitiço
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <!-- Spell Card 5 -->
-                        <div class="spell-card rounded-lg p-6 cursor-pointer" data-spell="expecto-patronum">
-                            <div class="flex items-start mb-4">
-                                <div class="bg-indigo-500 bg-opacity-20 p-3 rounded-full mr-4 w-12 h-12 flex items-center justify-center">
-                                    <i class="fas fa-dove text-indigo-400 text-xl"></i>
-                                </div>
-                                <div>
-                                    <h3 class="text-xl font-bold magic-font">Expecto Patronum</h3>
-                                    <p class="text-sm text-gray-300">Feitiço do Patrono</p>
-                                </div>
-                            </div>
-                            <p class="text-gray-300 mb-4">Conjura um guardião de energia positiva que protege contra os Dementadores e Lêmures.</p>
-                            <div class="flex justify-between items-center">
-                                <span class="text-xs px-3 py-1 bg-gray-700 rounded-full">Defesa</span>
-                                <button class="cast-spell-btn px-4 py-2 bg-purple-600 rounded-full text-sm hover:bg-purple-700 transition-colors">
-                                    Lançar Feitiço
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <!-- Spell Card 6 -->
-                        <div class="spell-card rounded-lg p-6 cursor-pointer" data-spell="accio">
-                            <div class="flex items-start mb-4">
-                                <div class="bg-pink-500 bg-opacity-20 p-3 rounded-full mr-4 w-12 h-12 flex items-center justify-center">
-                                    <i class="fas fa-hand-holding text-pink-400 text-xl"></i>
-                                </div>
-                                <div>
-                                    <h3 class="text-xl font-bold magic-font">Accio</h3>
-                                    <p class="text-sm text-gray-300">Feitiço de Convocação</p>
-                                </div>
-                            </div>
-                            <p class="text-gray-300 mb-4">Atrai objetos para o lançador quando o nome do objeto é pronunciado após o feitiço.</p>
-                            <div class="flex justify-between items-center">
-                                <span class="text-xs px-3 py-1 bg-gray-700 rounded-full">Utilidade</span>
-                                <button class="cast-spell-btn px-4 py-2 bg-purple-600 rounded-full text-sm hover:bg-purple-700 transition-colors">
-                                    Lançar Feitiço
-                                </button>
-                            </div>
-                        </div>
+                        <button id="next-page" class="px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">&gt;&gt;</button>
                     </div>
                 </div>
                 
-                <!-- Spell Creator Tab -->
                 <div id="spell-creator" class="tab-content hidden">
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                         <div class="ancient-paper p-8">
@@ -409,8 +421,7 @@
                                     <div class="relative w-64 h-64 bg-gray-800 rounded-lg flex items-center justify-center">
                                         <div id="wand-preview" class="absolute w-8 h-32 bg-amber-800 rounded-full transform rotate-12 origin-bottom"></div>
                                         <div id="spell-effect-preview" class="absolute opacity-0 transition-opacity duration-300">
-                                            <!-- Effect will be shown here -->
-                                        </div>
+                                            </div>
                                     </div>
                                 </div>
                                 <div class="text-center">
@@ -456,7 +467,6 @@
                     </div>
                 </div>
                 
-                <!-- Dueling Club Tab -->
                 <div id="dueling-club" class="tab-content hidden">
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                         <div class="ancient-paper p-8">
@@ -578,14 +588,14 @@
                                         </div>
                                         <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">5-2</span>
                                     </div>
-                                    <div class="flex justify-between items-center p-2 border-b border-gray-200">
+                                    <div class="flex items-center justify-between p-2 border-b border-gray-200">
                                         <div>
                                             <span class="font-semibold">Derrota</span> contra Snape
                                             <span class="text-xs text-gray-600 ml-2">Hoje cedo</span>
                                         </div>
                                         <span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded">1-5</span>
                                     </div>
-                                    <div class="flex justify-between items-center p-2 border-b border-gray-200">
+                                    <div class="flex items-center justify-between p-2 border-b border-gray-200">
                                         <div>
                                             <span class="font-semibold">Vitória</span> contra IA (Neville)
                                             <span class="text-xs text-gray-600 ml-2">Ontem</span>
@@ -600,7 +610,6 @@
             </div>
         </main>
         
-        <!-- Footer -->
         <footer class="mt-16 pt-8 border-t border-gray-800">
             <div class="flex flex-col md:flex-row justify-between items-center">
                 <div class="mb-4 md:mb-0">
@@ -629,7 +638,6 @@
         </footer>
     </div>
     
-    <!-- Modal -->
     <div id="wand-modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 hidden">
         <div class="bg-gray-900 rounded-lg max-w-md w-full p-6 relative border border-purple-500">
             <button id="close-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white">
@@ -665,17 +673,149 @@
     </div>
     
     <script>
+        // Dados de exemplo de feitiços
+        const allSpells = [
+            { name: "Accio", description: "Atrai objetos para o lançador quando o nome do objeto é pronunciado após o feitiço.", type: "Utilidade", difficulty: "Fácil", icon: "fas fa-hand-holding", color: "pink" },
+            { name: "Alohomora", description: "Abre fechaduras e portas trancadas quando a varinha é girada no sentido horário.", type: "Utilidade", difficulty: "Fácil", icon: "fas fa-unlock", color: "green" },
+            { name: "Expecto Patronum", description: "Conjura um guardião de energia positiva que protege contra os Dementadores e Lêmures.", type: "Defesa", difficulty: "Difícil", icon: "fas fa-dove", color: "indigo" },
+            { name: "Expelliarmus", description: "Desarma o oponente, fazendo com que qualquer objeto que esteja segurando seja arremessado para longe.", type: "Duelo", difficulty: "Médio", icon: "fas fa-hand-paper", color: "red" },
+            { name: "Finite Incantatem", description: "Encerra o efeito de outros feitiços.", type: "Utilidade", difficulty: "Médio", icon: "fas fa-times-circle", color: "gray" },
+            { name: "Lumos", description: "Ilumina a ponta da varinha, fornecendo luz em ambientes escuros.", type: "Luz", difficulty: "Fácil", icon: "fas fa-lightbulb", color: "yellow" },
+            { name: "Nox", description: "Apaga a luz da varinha.", type: "Luz", difficulty: "Fácil", icon: "fas fa-moon", color: "blue" },
+            { name: "Protego", description: "Cria um escudo invisível que deflete a maioria dos feitiços e ataques.", type: "Defesa", difficulty: "Médio", icon: "fas fa-shield-alt", color: "blue" },
+            { name: "Reparo", description: "Repara objetos quebrados.", type: "Utilidade", difficulty: "Fácil", icon: "fas fa-wrench", color: "green" },
+            { name: "Stupefy", description: "Atordoa o alvo, deixando-o inconsciente.", type: "Duelo", difficulty: "Médio", icon: "fas fa-dizzy", color: "orange" },
+            { name: "Wingardium Leviosa", description: "Faz objetos levitarem e flutuarem no ar quando a varinha é movida com um suave movimento de balanço.", type: "Transfiguração", difficulty: "Fácil", icon: "fas fa-feather-alt", color: "blue" },
+            { name: "Vingardium Ressuscitatus", description: "Traz objetos inanimados de volta à vida temporariamente.", type: "Transfiguração", difficulty: "Difícil", icon: "fas fa-cube", color: "purple" },
+            { name: "Confrigo", description: "Causa uma explosão nos objetos. Use com cautela!", type: "Maldição", difficulty: "Difícil", icon: "fas fa-bomb", color: "red" },
+            { name: "Expulso", description: "Causa uma explosão forte, arremessando objetos para longe.", type: "Maldição", difficulty: "Difícil", icon: "fas fa-explosion", color: "red" },
+            { name: "Ascendio", description: "Lança o conjurador para cima, como se impulsionado por uma força.", type: "Movimento", difficulty: "Médio", icon: "fas fa-arrow-alt-circle-up", color: "cyan" },
+            { name: "Descendo", description: "Move objetos para baixo ou abre passagens para baixo.", type: "Movimento", difficulty: "Médio", icon: "fas fa-arrow-alt-circle-down", color: "cyan" },
+            { name: "Obliviate", description: "Apaga a memória de uma pessoa.", type: "Encantamento", difficulty: "Difícil", icon: "fas fa-brain", color: "teal" },
+            { name: "Riddikulus", description: "Transforma um bicho-papão em algo cômico.", type: "Encantamento", difficulty: "Fácil", icon: "fas fa-laugh-squint", color: "yellow" },
+        ];
+
+        const spellsPerPage = 6;
+        let currentPage = 1;
+        let filteredSpells = [...allSpells];
+
+        const spellListContainer = document.getElementById('spell-list');
+        const searchInput = document.getElementById('spell-search');
+        const filterBtn = document.getElementById('filter-btn');
+        const filterDropdown = document.getElementById('filter-dropdown');
+        const filterType = document.getElementById('filter-type');
+        const filterDifficulty = document.getElementById('filter-difficulty');
+        const sortOrder = document.getElementById('sort-order');
+        const applyFiltersBtn = document.getElementById('apply-filters-btn');
+        const prevPageBtn = document.getElementById('prev-page');
+        const nextPageBtn = document.getElementById('next-page');
+        const pageNumbersContainer = document.getElementById('page-numbers');
+
+        // --- Funções da Biblioteca de Feitiços ---
+
+        function renderSpells() {
+            spellListContainer.innerHTML = '';
+            const startIndex = (currentPage - 1) * spellsPerPage;
+            const endIndex = startIndex + spellsPerPage;
+            const spellsToRender = filteredSpells.slice(startIndex, endIndex);
+
+            if (spellsToRender.length === 0) {
+                spellListContainer.innerHTML = '<p class="text-center col-span-full text-gray-400 text-lg">Nenhum feitiço encontrado com os filtros aplicados.</p>';
+                renderPagination(); // Renderiza paginação mesmo sem feitiços para mostrar '<< 0 >>'
+                return;
+            }
+
+            spellsToRender.forEach(spell => {
+                const spellCard = `
+                    <div class="spell-card rounded-lg p-6 cursor-pointer" data-spell="${spell.name.toLowerCase().replace(/\s/g, '-')}">
+                        <div class="flex items-start mb-4">
+                            <div class="bg-${spell.color}-500 bg-opacity-20 p-3 rounded-full mr-4 w-12 h-12 flex items-center justify-center">
+                                <i class="${spell.icon} text-${spell.color}-400 text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold magic-font">${spell.name}</h3>
+                                <p class="text-sm text-gray-300">Feitiço de ${spell.type}</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-300 mb-4">${spell.description}</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs px-3 py-1 bg-gray-700 rounded-full">${spell.difficulty}</span>
+                            <button class="cast-spell-btn px-4 py-2 bg-purple-600 rounded-full text-sm hover:bg-purple-700 transition-colors">
+                                Lançar Feitiço
+                            </button>
+                        </div>
+                    </div>
+                `;
+                spellListContainer.innerHTML += spellCard;
+            });
+            renderPagination();
+            addCastSpellListeners();
+        }
+
+        function renderPagination() {
+            pageNumbersContainer.innerHTML = '';
+            const totalPages = Math.ceil(filteredSpells.length / spellsPerPage);
+
+            prevPageBtn.disabled = currentPage === 1;
+            nextPageBtn.disabled = currentPage === totalPages || totalPages === 0;
+
+            for (let i = 1; i <= totalPages; i++) {
+                const pageBtn = document.createElement('button');
+                pageBtn.classList.add('px-3', 'py-1', 'rounded-lg', 'hover:bg-gray-600', 'transition-colors');
+                if (i === currentPage) {
+                    pageBtn.classList.add('bg-purple-600', 'text-white');
+                } else {
+                    pageBtn.classList.add('bg-gray-700', 'text-gray-300');
+                }
+                pageBtn.textContent = i;
+                pageBtn.addEventListener('click', () => {
+                    currentPage = i;
+                    renderSpells();
+                });
+                pageNumbersContainer.appendChild(pageBtn);
+            }
+        }
+
+        function applySearchAndFilters() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const selectedType = filterType.value;
+            const selectedDifficulty = filterDifficulty.value;
+            const selectedSortOrder = sortOrder.value;
+
+            filteredSpells = allSpells.filter(spell => {
+                const matchesSearch = spell.name.toLowerCase().includes(searchTerm) || spell.description.toLowerCase().includes(searchTerm);
+                const matchesType = selectedType === "" || spell.type === selectedType;
+                const matchesDifficulty = selectedDifficulty === "" || spell.difficulty === selectedDifficulty;
+                return matchesSearch && matchesType && matchesDifficulty;
+            });
+
+            filteredSpells.sort((a, b) => {
+                const nameA = a.name.toLowerCase();
+                const nameB = b.name.toLowerCase();
+                if (nameA < nameB) return selectedSortOrder === 'asc' ? -1 : 1;
+                if (nameA > nameB) return selectedSortOrder === 'asc' ? 1 : -1;
+                return 0;
+            });
+
+            currentPage = 1; // Reset to first page after applying filters
+            renderSpells();
+        }
+
+        // --- Event Listeners ---
+
         // Tab switching functionality
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.addEventListener('click', () => {
-                // Remove active class from all tabs and buttons
                 document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('tab-active'));
                 document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
                 
-                // Add active class to clicked tab
                 btn.classList.add('tab-active');
                 const tabId = btn.getAttribute('data-tab');
                 document.getElementById(tabId).classList.remove('hidden');
+
+                if (tabId === 'spell-library') {
+                    applySearchAndFilters(); // Re-render spells when switching to library tab
+                }
             });
         });
         
@@ -703,36 +843,35 @@
         });
         
         // Spell casting animation
-        document.querySelectorAll('.cast-spell-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const spellCard = this.closest('.spell-card');
-                const spellName = spellCard.getAttribute('data-spell');
-                
-                // Add casting animation
-                spellCard.classList.add('spell-cast');
-                
-                // Show spell effect
-                const animElement = document.getElementById(`${spellName}-anim`);
-                if (animElement) {
-                    animElement.classList.add('active');
+        function addCastSpellListeners() {
+            document.querySelectorAll('.cast-spell-btn').forEach(btn => {
+                btn.onclick = null; // Remove previous listeners to avoid duplicates
+                btn.addEventListener('click', function() {
+                    const spellCard = this.closest('.spell-card');
+                    const spellNameAttr = spellCard.getAttribute('data-spell'); // Use data-spell attribute for anim ID
+                    const animElement = document.getElementById(`${spellNameAttr}-anim`);
+                    
+                    spellCard.classList.add('spell-cast');
+                    
+                    if (animElement) {
+                        animElement.classList.add('active');
+                        setTimeout(() => {
+                            animElement.classList.remove('active');
+                        }, 2000);
+                    }
+                    
                     setTimeout(() => {
-                        animElement.classList.remove('active');
-                    }, 2000);
-                }
-                
-                // Remove animation class after it completes
-                setTimeout(() => {
-                    spellCard.classList.remove('spell-cast');
-                }, 500);
+                        spellCard.classList.remove('spell-cast');
+                    }, 500);
+                });
             });
-        });
+        }
         
         // Spell creator preview
         const testSpellBtn = document.getElementById('test-spell-btn');
         const spellEffectPreview = document.getElementById('spell-effect-preview');
         
         testSpellBtn.addEventListener('click', function() {
-            // Create random effect for demo
             const effects = [
                 '<div class="w-16 h-16 bg-yellow-300 rounded-full filter blur-xl animate-pulse"></div>',
                 '<div class="w-24 h-1 bg-red-500 rounded-full animate-spark"></div>',
@@ -743,7 +882,6 @@
             spellEffectPreview.innerHTML = randomEffect;
             spellEffectPreview.style.opacity = '1';
             
-            // Animate wand
             const wandPreview = document.getElementById('wand-preview');
             wandPreview.style.animation = 'none';
             void wandPreview.offsetWidth; // Trigger reflow
@@ -763,7 +901,6 @@
                 const particle = document.createElement('div');
                 particle.classList.add('particle');
                 
-                // Random properties
                 const size = Math.random() * 5 + 1;
                 const posX = Math.random() * window.innerWidth;
                 const posY = Math.random() * window.innerHeight;
@@ -771,7 +908,6 @@
                 const duration = Math.random() * 20 + 10;
                 const opacity = Math.random() * 0.5 + 0.1;
                 
-                // Apply properties
                 particle.style.width = `${size}px`;
                 particle.style.height = `${size}px`;
                 particle.style.left = `${posX}px`;
@@ -779,7 +915,6 @@
                 particle.style.opacity = opacity;
                 particle.style.animation = `float ${duration}s ease-in-out ${delay}s infinite`;
                 
-                // Random color
                 const colors = ['#ef7d57', '#b13e53', '#5d2751', '#ffcd75', '#f8f1ff'];
                 const color = colors[Math.floor(Math.random() * colors.length)];
                 particle.style.backgroundColor = color;
@@ -790,7 +925,7 @@
         
         // Add floating animation to CSS
         const style = document.createElement('style');
-        style.innerHTML = `
+        style.innerHTML += `
             @keyframes float {
                 0% { transform: translateY(0) translateX(0); opacity: 0.1; }
                 50% { transform: translateY(-100px) translateX(20px); opacity: 0.8; }
@@ -813,11 +948,85 @@
             .animate-spark {
                 animation: animate-spark 0.5s ease-out forwards;
             }
+
+            @keyframes animate-ping {
+                0% { transform: scale(0.2); opacity: 0.8; }
+                100% { transform: scale(1.2); opacity: 0; }
+            }
+            .animate-ping {
+                animation: animate-ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+            }
+            @keyframes animate-expand {
+                0% { transform: scale(0); opacity: 0; }
+                50% { transform: scale(1); opacity: 0.5; }
+                100% { transform: scale(1.5); opacity: 0; }
+            }
+            .animate-expand {
+                animation: animate-expand 1s ease-out forwards;
+            }
+            @keyframes animate-fade-in-out {
+                0% { opacity: 0; }
+                50% { opacity: 1; }
+                100% { opacity: 0; }
+            }
         `;
         document.head.appendChild(style);
         
         // Initialize particles
         window.addEventListener('load', createParticles);
+
+        // Profile menu dropdown functionality
+        const profileMenuBtn = document.getElementById('profile-menu-btn');
+        const profileDropdown = document.getElementById('profile-dropdown');
+
+        profileMenuBtn.addEventListener('click', (event) => {
+            event.stopPropagation(); // Prevent click from closing immediately
+            profileDropdown.classList.toggle('hidden');
+        });
+
+        // Close dropdown when clicking outside
+        window.addEventListener('click', (event) => {
+            if (!profileMenuBtn.contains(event.target) && !profileDropdown.contains(event.target)) {
+                profileDropdown.classList.add('hidden');
+            }
+        });
+
+        // Search and Filter functionality
+        searchInput.addEventListener('keyup', applySearchAndFilters);
+        filterBtn.addEventListener('click', (event) => {
+            event.stopPropagation();
+            filterDropdown.classList.toggle('hidden');
+        });
+        applyFiltersBtn.addEventListener('click', () => {
+            applySearchAndFilters();
+            filterDropdown.classList.add('hidden'); // Close dropdown after applying filters
+        });
+        filterDropdown.addEventListener('click', (event) => {
+            event.stopPropagation(); // Keep dropdown open when clicking inside
+        });
+        filterType.addEventListener('change', applySearchAndFilters);
+        filterDifficulty.addEventListener('change', applySearchAndFilters);
+        sortOrder.addEventListener('change', applySearchAndFilters);
+
+
+        // Pagination
+        prevPageBtn.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                renderSpells();
+            }
+        });
+
+        nextPageBtn.addEventListener('click', () => {
+            const totalPages = Math.ceil(filteredSpells.length / spellsPerPage);
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderSpells();
+            }
+        });
+
+        // Initial render
+        applySearchAndFilters(); // Initial render of spells and pagination
     </script>
 </body>
 </html>
