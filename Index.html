@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartWitch - Magia Interativa</title>
-    <link rel="icon" href="src/Img/Logo.png" type="image/png">
+    <link rel="icon" href="./src/Img/Logo.png" type="image/png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -223,7 +223,7 @@
     <nav class="fixed top-0 w-full bg-dark px-4 py-3 flex justify-between items-center shadow-lg z-20">
         <div class="flex items-center">
             <div class="relative w-10 h-10 mr-2">
-                <img src="src/Img/Logo.png" alt="SmartWitch Logo" class="logo-circle w-full h-full">
+                <img src="./src/Img/Logo.png" alt="SmartWitch Logo" class="logo-circle w-full h-full">
             </div>
             <h1
                 class="magic-font text-3xl bg-gradient-to-r from-purple-500 via-pink-500 to-yellow-500 bg-clip-text text-transparent">
@@ -280,7 +280,7 @@
         <header class="flex flex-col items-center mb-12">
             <div class="flex flex-col items-center mb-6">
                 <div class="relative w-24 h-24 mb-4">
-                    <img src="src/Img/Logo.png" alt="SmartWitch Logo" class="logo-circle-large w-full h-full">
+                    <img src="./src/Img/Logo.png" alt="SmartWitch Logo" class="logo-circle-large w-full h-full">
                 </div>
                 <h1
                     class="magic-font text-5xl md:text-6xl text-center bg-gradient-to-r from-purple-500 via-pink-500 to-yellow-500 bg-clip-text text-transparent">
@@ -1126,7 +1126,7 @@
             // esta iframe será bloqueada pelo navegador, a menos que você
             // modifique o código do Google Apps Script (função doGet())
             // para incluir .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
-            movementCaptureIframe.src = '/src/components/movement.html';
+            movementCaptureIframe.src = './src/components/movement.html';
             movementCaptureModal.classList.remove('hidden');
         });
 
