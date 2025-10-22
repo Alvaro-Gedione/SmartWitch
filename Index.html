@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap');
-        
+
         :root {
             --primary: #5d2751;
             --secondary: #b13e53;
@@ -17,7 +18,7 @@
             --dark: #1a1a2e;
             --light: #f8f1ff;
         }
-        
+
         body {
             font-family: 'Cormorant Garamond', serif;
             background-color: var(--dark);
@@ -25,13 +26,14 @@
             background-image: url('https://www.transparenttextures.com/patterns/black-paper.png');
             min-height: 100vh;
             overflow-x: hidden;
-            padding-top: 56px; /* Ajuste para a altura da navbar */
+            padding-top: 56px;
+            /* Ajuste para a altura da navbar */
         }
-        
+
         .magic-font {
             font-family: 'Cinzel Decorative', cursive;
         }
-        
+
         .spell-card {
             background: rgba(29, 29, 59, 0.7);
             backdrop-filter: blur(10px);
@@ -39,25 +41,25 @@
             transition: all 0.3s ease;
             box-shadow: 0 0 15px rgba(239, 125, 87, 0.3);
         }
-        
+
         .spell-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 25px rgba(239, 125, 87, 0.5);
             border-color: var(--accent);
         }
-        
+
         .wand-path {
             stroke-dasharray: 1000;
             stroke-dashoffset: 1000;
             animation: draw 3s forwards;
         }
-        
+
         @keyframes draw {
             to {
                 stroke-dashoffset: 0;
             }
         }
-        
+
         .particle {
             position: absolute;
             background-color: var(--accent);
@@ -65,7 +67,7 @@
             pointer-events: none;
             z-index: -1;
         }
-        
+
         .spell-animation {
             position: absolute;
             width: 100%;
@@ -77,11 +79,11 @@
             opacity: 0;
             transition: opacity 0.5s;
         }
-        
+
         .spell-animation.active {
             opacity: 1;
         }
-        
+
         .ancient-paper {
             background-image: url('https://www.transparenttextures.com/patterns/rice-paper-3.png');
             background-color: #f5e7c1;
@@ -91,7 +93,7 @@
             position: relative;
             overflow: hidden;
         }
-        
+
         .ancient-paper::before {
             content: "";
             position: absolute;
@@ -99,40 +101,48 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(0deg, transparent 95%, rgba(0,0,0,0.1) 96%, transparent 97%),
-                        linear-gradient(90deg, transparent 95%, rgba(0,0,0,0.1) 96%, transparent 97%);
+            background: linear-gradient(0deg, transparent 95%, rgba(0, 0, 0, 0.1) 96%, transparent 97%),
+                linear-gradient(90deg, transparent 95%, rgba(0, 0, 0, 0.1) 96%, transparent 97%);
             background-size: 20px 20px;
             pointer-events: none;
         }
-        
+
         .tab-active {
             border-bottom: 3px solid var(--accent);
             color: var(--accent) !important;
         }
-        
+
         .spell-cast {
             animation: castSpell 0.5s ease-out;
         }
-        
+
         @keyframes castSpell {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+            }
         }
-        
+
         .scroll-container {
             scrollbar-width: thin;
             scrollbar-color: var(--secondary) var(--dark);
         }
-        
+
         .scroll-container::-webkit-scrollbar {
             width: 8px;
         }
-        
+
         .scroll-container::-webkit-scrollbar-track {
             background: var(--dark);
         }
-        
+
         .scroll-container::-webkit-scrollbar-thumb {
             background-color: var(--secondary);
             border-radius: 10px;
@@ -147,7 +157,7 @@
             border: 2px solid var(--accent);
             box-shadow: 0 0 10px rgba(239, 125, 87, 0.5);
         }
-        
+
         .logo-circle-large {
             width: 100px;
             height: 100px;
@@ -161,62 +171,81 @@
         .filter-dropdown {
             position: absolute;
             right: 0;
-            top: 100%; /* Posiciona abaixo do botão */
+            top: 100%;
+            /* Posiciona abaixo do botão */
             background-color: var(--dark);
             border: 1px solid var(--secondary);
             border-radius: 0.5rem;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
             padding: 1rem;
-            z-index: 30; /* Acima de outros conteúdos */
+            z-index: 30;
+            /* Acima de outros conteúdos */
             width: 250px;
         }
     </style>
 </head>
+
 <body>
     <div id="particles-js"></div>
-    
+
     <div id="spell-animations">
         <div class="spell-animation" id="lumos-anim">
             <div class="absolute inset-0 bg-yellow-200 opacity-30"></div>
-            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-yellow-300 rounded-full filter blur-xl"></div>
+            <div
+                class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-yellow-300 rounded-full filter blur-xl">
+            </div>
         </div>
         <div class="spell-animation" id="expelliarmus-anim">
-            <div class="absolute top-0 left-1/2 w-1 h-1/2 bg-red-500 rounded-full filter blur-sm" style="transform: rotate(45deg); transform-origin: top center;"></div>
-            <div class="absolute top-0 left-1/2 w-1 h-1/2 bg-red-500 rounded-full filter blur-sm" style="transform: rotate(-45deg); transform-origin: top center;"></div>
+            <div class="absolute top-0 left-1/2 w-1 h-1/2 bg-red-500 rounded-full filter blur-sm"
+                style="transform: rotate(45deg); transform-origin: top center;"></div>
+            <div class="absolute top-0 left-1/2 w-1 h-1/2 bg-red-500 rounded-full filter blur-sm"
+                style="transform: rotate(-45deg); transform-origin: top center;"></div>
         </div>
-         <div class="spell-animation" id="finite-incantatem-anim">
+        <div class="spell-animation" id="finite-incantatem-anim">
             <div class="absolute inset-0 bg-gray-500 opacity-20"></div>
-            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-24 h-24 border-4 border-gray-400 rounded-full animate-ping"></div>
+            <div
+                class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-24 h-24 border-4 border-gray-400 rounded-full animate-ping">
+            </div>
         </div>
         <div class="spell-animation" id="protego-anim">
             <div class="absolute inset-0 bg-blue-500 opacity-20 rounded-full animate-expand"></div>
         </div>
         <div class="spell-animation" id="reparo-anim">
-            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-green-500 rounded-full filter blur-md animate-pulse"></div>
-            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-3xl font-bold animate-fade-in-out">✨</div>
+            <div
+                class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-green-500 rounded-full filter blur-md animate-pulse">
+            </div>
+            <div
+                class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-3xl font-bold animate-fade-in-out">
+                ✨</div>
         </div>
     </div>
-    
+
     <nav class="fixed top-0 w-full bg-dark px-4 py-3 flex justify-between items-center shadow-lg z-20">
         <div class="flex items-center">
             <div class="relative w-10 h-10 mr-2">
                 <img src="src/Img/Logo.png" alt="SmartWitch Logo" class="logo-circle w-full h-full">
             </div>
-            <h1 class="magic-font text-3xl bg-gradient-to-r from-purple-500 via-pink-500 to-yellow-500 bg-clip-text text-transparent">SmartWitch</h1>
+            <h1
+                class="magic-font text-3xl bg-gradient-to-r from-purple-500 via-pink-500 to-yellow-500 bg-clip-text text-transparent">
+                SmartWitch</h1>
         </div>
         <div class="flex items-center space-x-4">
-            <button class="relative text-gray-300 hover:text-white transition-colors p-2 rounded-full hover:bg-gray-700">
+            <button
+                class="relative text-gray-300 hover:text-white transition-colors p-2 rounded-full hover:bg-gray-700">
                 <i class="fas fa-bell text-xl"></i>
                 <span class="absolute top-1 right-1 h-3 w-3 bg-red-500 rounded-full border border-dark"></span>
             </button>
             <div class="relative">
-                <button id="profile-menu-btn" class="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors p-2 rounded-full hover:bg-gray-700 focus:outline-none">
-                    <div class="w-10 h-10 rounded-full bg-purple-700 flex items-center justify-center text-xl font-bold">
+                <button id="profile-menu-btn"
+                    class="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors p-2 rounded-full hover:bg-gray-700 focus:outline-none">
+                    <div
+                        class="w-10 h-10 rounded-full bg-purple-700 flex items-center justify-center text-xl font-bold">
                         BR
                     </div>
                     <i class="fas fa-chevron-down text-sm"></i>
                 </button>
-                <div id="profile-dropdown" class="absolute right-0 mt-2 w-64 bg-gray-800 rounded-lg shadow-xl py-2 hidden">
+                <div id="profile-dropdown"
+                    class="absolute right-0 mt-2 w-64 bg-gray-800 rounded-lg shadow-xl py-2 hidden">
                     <div class="px-4 py-2 text-white border-b border-gray-700">
                         <p class="font-semibold">Bruxo(a) Teste</p>
                         <p class="text-sm text-gray-400">Nível: Iniciante</p>
@@ -226,7 +255,8 @@
                         Energia da Varinha:
                         <div class="ml-2 bg-gray-700 rounded-full h-2 w-24 relative overflow-hidden">
                             <div class="bg-yellow-400 h-full rounded-full" style="width: 85%;"></div>
-                            <span class="absolute top-0 left-0 w-full h-full flex justify-center items-center text-xs text-gray-900 font-semibold">85%</span>
+                            <span
+                                class="absolute top-0 left-0 w-full h-full flex justify-center items-center text-xs text-gray-900 font-semibold">85%</span>
                         </div>
                     </a>
                     <a href="#" class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white">
@@ -252,7 +282,8 @@
                 <div class="relative w-24 h-24 mb-4">
                     <img src="src/Img/Logo.png" alt="SmartWitch Logo" class="logo-circle-large w-full h-full">
                 </div>
-                <h1 class="magic-font text-5xl md:text-6xl text-center bg-gradient-to-r from-purple-500 via-pink-500 to-yellow-500 bg-clip-text text-transparent">
+                <h1
+                    class="magic-font text-5xl md:text-6xl text-center bg-gradient-to-r from-purple-500 via-pink-500 to-yellow-500 bg-clip-text text-transparent">
                     SmartWitch
                 </h1>
             </div>
@@ -260,42 +291,52 @@
                 O portal definitivo para bruxos e bruxas modernos explorarem a magia como nunca antes!
             </p>
             <div class="flex space-x-4">
-                <button id="connect-wand-btn" class="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full font-semibold hover:from-purple-700 hover:to-pink-700 transition-all flex items-center">
+                <button id="connect-wand-btn"
+                    class="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full font-semibold hover:from-purple-700 hover:to-pink-700 transition-all flex items-center">
                     <i class="fas fa-magic mr-2"></i> Conectar Varinha
                 </button>
-                <button class="px-6 py-3 border border-yellow-400 text-yellow-400 rounded-full font-semibold hover:bg-yellow-400 hover:bg-opacity-10 transition-all">
+                <button
+                    class="px-6 py-3 border border-yellow-400 text-yellow-400 rounded-full font-semibold hover:bg-yellow-400 hover:bg-opacity-10 transition-all">
                     <i class="fas fa-book-open mr-2"></i> Tutorial
                 </button>
             </div>
         </header>
-        
+
         <main>
             <div class="flex border-b border-gray-700 mb-8">
-                <button class="tab-btn px-6 py-3 text-lg font-semibold text-gray-300 hover:text-white transition-all tab-active" data-tab="spell-library">
+                <button
+                    class="tab-btn px-6 py-3 text-lg font-semibold text-gray-300 hover:text-white transition-all tab-active"
+                    data-tab="spell-library">
                     Biblioteca de Feitiços
                 </button>
-                <button class="tab-btn px-6 py-3 text-lg font-semibold text-gray-300 hover:text-white transition-all" data-tab="spell-creator">
+                <button class="tab-btn px-6 py-3 text-lg font-semibold text-gray-300 hover:text-white transition-all"
+                    data-tab="spell-creator">
                     Criador de Feitiços
                 </button>
-                <button class="tab-btn px-6 py-3 text-lg font-semibold text-gray-300 hover:text-white transition-all" data-tab="dueling-club">
+                <button class="tab-btn px-6 py-3 text-lg font-semibold text-gray-300 hover:text-white transition-all"
+                    data-tab="dueling-club">
                     Clube de Duelos
                 </button>
             </div>
-            
+
             <div id="tab-contents">
                 <div id="spell-library" class="tab-content active">
                     <div class="mb-8">
                         <div class="relative flex items-center">
-                            <input type="text" id="spell-search" placeholder="Procurar feitiços..." class="w-full px-6 py-4 bg-gray-800 bg-opacity-70 border border-gray-700 rounded-full focus:outline-none focus:ring-2 focus:ring-purple-500 pl-12 pr-12">
-                            <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                            <button id="filter-btn" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white p-2 rounded-full hover:bg-gray-700">
+                            <input type="text" id="spell-search" placeholder="Procurar feitiços..."
+                                class="w-full px-6 py-4 bg-gray-800 bg-opacity-70 border border-gray-700 rounded-full focus:outline-none focus:ring-2 focus:ring-purple-500 pl-12 pr-12">
+                            <i
+                                class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                            <button id="filter-btn"
+                                class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white p-2 rounded-full hover:bg-gray-700">
                                 <i class="fas fa-filter text-xl"></i>
                             </button>
                             <div id="filter-dropdown" class="filter-dropdown hidden">
                                 <h3 class="font-bold text-lg mb-4 text-white">Filtrar Feitiços</h3>
                                 <div class="mb-4">
                                     <label class="block text-sm font-medium mb-2">Tipo de Feitiço</label>
-                                    <select id="filter-type" class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                                    <select id="filter-type"
+                                        class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                                         <option value="">Todos</option>
                                         <option value="Luz">Luz</option>
                                         <option value="Duelo">Duelo</option>
@@ -308,7 +349,8 @@
                                 </div>
                                 <div class="mb-4">
                                     <label class="block text-sm font-medium mb-2">Dificuldade</label>
-                                    <select id="filter-difficulty" class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                                    <select id="filter-difficulty"
+                                        class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                                         <option value="">Todas</option>
                                         <option value="Fácil">Fácil</option>
                                         <option value="Médio">Médio</option>
@@ -317,42 +359,49 @@
                                 </div>
                                 <div class="mb-4">
                                     <label class="block text-sm font-medium mb-2">Ordenação</label>
-                                    <select id="sort-order" class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                                    <select id="sort-order"
+                                        class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                                         <option value="asc">A-Z</option>
                                         <option value="desc">Z-A</option>
                                     </select>
                                 </div>
-                                <button id="apply-filters-btn" class="w-full px-4 py-2 bg-purple-600 rounded-md text-white font-semibold hover:bg-purple-700 transition-colors">
+                                <button id="apply-filters-btn"
+                                    class="w-full px-4 py-2 bg-purple-600 rounded-md text-white font-semibold hover:bg-purple-700 transition-colors">
                                     Aplicar Filtros
                                 </button>
                             </div>
                         </div>
                     </div>
-                    
+
                     <div id="spell-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        </div>
+                    </div>
 
                     <div id="pagination" class="flex justify-center items-center mt-8 space-x-2">
-                        <button id="prev-page" class="px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">&lt;&lt;</button>
+                        <button id="prev-page"
+                            class="px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">&lt;&lt;</button>
                         <div id="page-numbers" class="flex space-x-1">
-                            </div>
-                        <button id="next-page" class="px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">&gt;&gt;</button>
+                        </div>
+                        <button id="next-page"
+                            class="px-4 py-2 bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">&gt;&gt;</button>
                     </div>
                 </div>
-                
+
                 <div id="spell-creator" class="tab-content hidden">
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                         <div class="ancient-paper p-8">
                             <h2 class="text-2xl font-bold mb-6 magic-font text-center">Criar Novo Feitiço</h2>
-                            
+
                             <div class="mb-6">
                                 <label class="block text-sm font-medium mb-2">Nome do Feitiço</label>
-                                <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="Ex: Ignis Fatuus">
+                                <input type="text"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
+                                    placeholder="Ex: Ignis Fatuus">
                             </div>
-                            
+
                             <div class="mb-6">
                                 <label class="block text-sm font-medium mb-2">Tipo de Feitiço</label>
-                                <select class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                                <select
+                                    class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                                     <option>Luz</option>
                                     <option>Duelo</option>
                                     <option>Transfiguração</option>
@@ -362,75 +411,78 @@
                                     <option>Encantamento</option>
                                 </select>
                             </div>
-                            
+
                             <div class="mb-6">
                                 <label class="block text-sm font-medium mb-2">Movimento da Varinha</label>
-                                <div class="grid grid-cols-3 gap-2">
-                                    <button class="wand-movement-btn px-3 py-2 border border-gray-300 rounded hover:bg-gray-100 transition-colors">↖</button>
-                                    <button class="wand-movement-btn px-3 py-2 border border-gray-300 rounded hover:bg-gray-100 transition-colors">↑</button>
-                                    <button class="wand-movement-btn px-3 py-2 border border-gray-300 rounded hover:bg-gray-100 transition-colors">↗</button>
-                                    <button class="wand-movement-btn px-3 py-2 border border-gray-300 rounded hover:bg-gray-100 transition-colors">←</button>
-                                    <button class="wand-movement-btn px-3 py-2 border border-gray-300 rounded hover:bg-gray-100 transition-colors">•</button>
-                                    <button class="wand-movement-btn px-3 py-2 border border-gray-300 rounded hover:bg-gray-100 transition-colors">→</button>
-                                    <button class="wand-movement-btn px-3 py-2 border border-gray-300 rounded hover:bg-gray-100 transition-colors">↙</button>
-                                    <button class="wand-movement-btn px-3 py-2 border border-gray-300 rounded hover:bg-gray-100 transition-colors">↓</button>
-                                    <button class="wand-movement-btn px-3 py-2 border border-gray-300 rounded hover:bg-gray-100 transition-colors">↘</button>
-                                </div>
-                                <div class="mt-2">
-                                    <label class="inline-flex items-center">
-                                        <input type="checkbox" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
-                                        <span class="ml-2">Movimento em Zigue-Zague</span>
-                                    </label>
-                                </div>
+                                <button id="open-movement-capture-iframe-btn"
+                                    class="w-full px-6 py-3 bg-purple-600 text-white rounded-md font-semibold hover:bg-purple-700 transition-colors flex items-center justify-center">
+                                    <i class="fas fa-pen-fancy mr-2"></i> Capturar Movimento da Varinha
+                                </button>
                             </div>
-                            
+
                             <div class="mb-6">
                                 <label class="block text-sm font-medium mb-2">Efeito Visual</label>
                                 <div class="grid grid-cols-4 gap-2">
-                                    <button class="effect-btn px-3 py-2 border border-gray-300 rounded hover:bg-gray-100 transition-colors" data-effect="sparks">
+                                    <button
+                                        class="effect-btn px-3 py-2 border border-gray-300 rounded hover:bg-gray-100 transition-colors"
+                                        data-effect="sparks">
                                         <i class="fas fa-bolt text-yellow-500"></i>
                                     </button>
-                                    <button class="effect-btn px-3 py-2 border border-gray-300 rounded hover:bg-gray-100 transition-colors" data-effect="light">
+                                    <button
+                                        class="effect-btn px-3 py-2 border border-gray-300 rounded hover:bg-gray-100 transition-colors"
+                                        data-effect="light">
                                         <i class="fas fa-sun text-yellow-300"></i>
                                     </button>
-                                    <button class="effect-btn px-3 py-2 border border-gray-300 rounded hover:bg-gray-100 transition-colors" data-effect="smoke">
+                                    <button
+                                        class="effect-btn px-3 py-2 border border-gray-300 rounded hover:bg-gray-100 transition-colors"
+                                        data-effect="smoke">
                                         <i class="fas fa-smog text-gray-400"></i>
                                     </button>
-                                    <button class="effect-btn px-3 py-2 border border-gray-300 rounded hover:bg-gray-100 transition-colors" data-effect="fire">
+                                    <button
+                                        class="effect-btn px-3 py-2 border border-gray-300 rounded hover:bg-gray-100 transition-colors"
+                                        data-effect="fire">
                                         <i class="fas fa-fire text-red-500"></i>
                                     </button>
                                 </div>
                             </div>
-                            
+
                             <div class="mb-6">
                                 <label class="block text-sm font-medium mb-2">Descrição do Feitiço</label>
-                                <textarea class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-500" rows="3" placeholder="Descreva o efeito e propósito do seu feitiço..."></textarea>
+                                <textarea
+                                    class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
+                                    rows="3" placeholder="Descreva o efeito e propósito do seu feitiço..."></textarea>
                             </div>
-                            
+
                             <div class="flex justify-center">
-                                <button class="px-6 py-3 bg-purple-600 text-white rounded-full font-semibold hover:bg-purple-700 transition-colors">
+                                <button
+                                    class="px-6 py-3 bg-purple-600 text-white rounded-full font-semibold hover:bg-purple-700 transition-colors">
                                     <i class="fas fa-save mr-2"></i> Salvar Feitiço
                                 </button>
                             </div>
                         </div>
-                        
+
                         <div>
                             <div class="ancient-paper p-8 mb-8">
                                 <h2 class="text-2xl font-bold mb-4 magic-font text-center">Pré-visualização</h2>
                                 <div class="flex justify-center mb-6">
-                                    <div class="relative w-64 h-64 bg-gray-800 rounded-lg flex items-center justify-center">
-                                        <div id="wand-preview" class="absolute w-8 h-32 bg-amber-800 rounded-full transform rotate-12 origin-bottom"></div>
-                                        <div id="spell-effect-preview" class="absolute opacity-0 transition-opacity duration-300">
-                                            </div>
+                                    <div
+                                        class="relative w-64 h-64 bg-gray-800 rounded-lg flex items-center justify-center">
+                                        <div id="wand-preview"
+                                            class="absolute w-8 h-32 bg-amber-800 rounded-full transform rotate-12 origin-bottom">
+                                        </div>
+                                        <div id="spell-effect-preview"
+                                            class="absolute opacity-0 transition-opacity duration-300">
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="text-center">
-                                    <button id="test-spell-btn" class="px-6 py-3 bg-green-600 text-white rounded-full font-semibold hover:bg-green-700 transition-colors">
+                                    <button id="test-spell-btn"
+                                        class="px-6 py-3 bg-green-600 text-white rounded-full font-semibold hover:bg-green-700 transition-colors">
                                         <i class="fas fa-play mr-2"></i> Testar Feitiço
                                     </button>
                                 </div>
                             </div>
-                            
+
                             <div class="ancient-paper p-8">
                                 <h2 class="text-2xl font-bold mb-4 magic-font text-center">Seus Feitiços</h2>
                                 <div class="max-h-64 overflow-y-auto scroll-container">
@@ -446,7 +498,8 @@
                                     <div class="flex items-center justify-between p-3 border-b border-gray-200">
                                         <div>
                                             <h4 class="font-semibold magic-font">Ventus Celere</h4>
-                                            <p class="text-sm text-gray-600">Cria uma rajada de vento para empurrar objetos</p>
+                                            <p class="text-sm text-gray-600">Cria uma rajada de vento para empurrar
+                                                objetos</p>
                                         </div>
                                         <button class="text-purple-600 hover:text-purple-800">
                                             <i class="fas fa-play"></i>
@@ -466,73 +519,84 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div id="dueling-club" class="tab-content hidden">
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                         <div class="ancient-paper p-8">
                             <h2 class="text-2xl font-bold mb-6 magic-font text-center">Iniciar Duelo</h2>
-                            
+
                             <div class="mb-6">
                                 <label class="block text-sm font-medium mb-2">Modo de Duelo</label>
                                 <div class="grid grid-cols-2 gap-4">
-                                    <button class="duel-mode-btn px-4 py-3 border-2 border-gray-300 rounded-lg hover:bg-gray-100 transition-colors text-center">
+                                    <button
+                                        class="duel-mode-btn px-4 py-3 border-2 border-gray-300 rounded-lg hover:bg-gray-100 transition-colors text-center">
                                         <i class="fas fa-user text-2xl mb-2 text-blue-500"></i>
                                         <h3 class="font-semibold">Treino</h3>
                                         <p class="text-xs text-gray-600">Praticar contra a IA</p>
                                     </button>
-                                    <button class="duel-mode-btn px-4 py-3 border-2 border-gray-300 rounded-lg hover:bg-gray-100 transition-colors text-center">
+                                    <button
+                                        class="duel-mode-btn px-4 py-3 border-2 border-gray-300 rounded-lg hover:bg-gray-100 transition-colors text-center">
                                         <i class="fas fa-users text-2xl mb-2 text-green-500"></i>
                                         <h3 class="font-semibold">Multiplayer</h3>
                                         <p class="text-xs text-gray-600">Duelar contra outro bruxo</p>
                                     </button>
                                 </div>
                             </div>
-                            
+
                             <div class="mb-6">
                                 <label class="block text-sm font-medium mb-2">Dificuldade</label>
-                                <select class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                                <select
+                                    class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                                     <option>Iniciante (Neville)</option>
                                     <option>Intermediário (Hermione)</option>
                                     <option>Avançado (Snape)</option>
                                     <option>Mestre (Dumbledore)</option>
                                 </select>
                             </div>
-                            
+
                             <div class="mb-6">
                                 <label class="block text-sm font-medium mb-2">Feitiços Permitidos</label>
                                 <div class="space-y-2">
                                     <label class="inline-flex items-center">
-                                        <input type="checkbox" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500" checked>
+                                        <input type="checkbox"
+                                            class="rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+                                            checked>
                                         <span class="ml-2">Feitiços de Luz</span>
                                     </label>
                                     <label class="inline-flex items-center">
-                                        <input type="checkbox" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500" checked>
+                                        <input type="checkbox"
+                                            class="rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+                                            checked>
                                         <span class="ml-2">Feitiços de Desarme</span>
                                     </label>
                                     <label class="inline-flex items-center">
-                                        <input type="checkbox" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
+                                        <input type="checkbox"
+                                            class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
                                         <span class="ml-2">Feitiços de Defesa</span>
                                     </label>
                                     <label class="inline-flex items-center">
-                                        <input type="checkbox" class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
+                                        <input type="checkbox"
+                                            class="rounded border-gray-300 text-purple-600 focus:ring-purple-500">
                                         <span class="ml-2">Feitiços Personalizados</span>
                                     </label>
                                 </div>
                             </div>
-                            
+
                             <div class="flex justify-center">
-                                <button class="px-8 py-3 bg-red-600 text-white rounded-full font-semibold hover:bg-red-700 transition-colors">
+                                <button
+                                    class="px-8 py-3 bg-red-600 text-white rounded-full font-semibold hover:bg-red-700 transition-colors">
                                     <i class="fas fa-fist-raised mr-2"></i> Iniciar Duelo
                                 </button>
                             </div>
                         </div>
-                        
+
                         <div>
                             <div class="ancient-paper p-8 mb-8">
                                 <h2 class="text-2xl font-bold mb-4 magic-font text-center">Duelo em Andamento</h2>
                                 <div class="flex justify-between items-center mb-6">
                                     <div class="text-center">
-                                        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                                        <div
+                                            class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-2">
                                             <i class="fas fa-user text-blue-500 text-2xl"></i>
                                         </div>
                                         <h3 class="font-semibold">Você</h3>
@@ -542,7 +606,8 @@
                                     </div>
                                     <div class="text-4xl font-bold mx-4">VS</div>
                                     <div class="text-center">
-                                        <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                                        <div
+                                            class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-2">
                                             <i class="fas fa-robot text-red-500 text-2xl"></i>
                                         </div>
                                         <h3 class="font-semibold">Snape</h3>
@@ -561,23 +626,27 @@
                                     </div>
                                 </div>
                                 <div class="grid grid-cols-3 gap-2 mb-4">
-                                    <button class="duel-spell-btn px-3 py-2 bg-blue-100 text-blue-800 rounded hover:bg-blue-200 transition-colors">
+                                    <button
+                                        class="duel-spell-btn px-3 py-2 bg-blue-100 text-blue-800 rounded hover:bg-blue-200 transition-colors">
                                         Expelliarmus
                                     </button>
-                                    <button class="duel-spell-btn px-3 py-2 bg-blue-100 text-blue-800 rounded hover:bg-blue-200 transition-colors">
+                                    <button
+                                        class="duel-spell-btn px-3 py-2 bg-blue-100 text-blue-800 rounded hover:bg-blue-200 transition-colors">
                                         Protego
                                     </button>
-                                    <button class="duel-spell-btn px-3 py-2 bg-blue-100 text-blue-800 rounded hover:bg-blue-200 transition-colors">
+                                    <button
+                                        class="duel-spell-btn px-3 py-2 bg-blue-100 text-blue-800 rounded hover:bg-blue-200 transition-colors">
                                         Stupefy
                                     </button>
                                 </div>
                                 <div class="text-center">
-                                    <button class="px-6 py-2 bg-gray-800 text-white rounded-full font-semibold hover:bg-gray-900 transition-colors">
+                                    <button
+                                        class="px-6 py-2 bg-gray-800 text-white rounded-full font-semibold hover:bg-gray-900 transition-colors">
                                         <i class="fas fa-times mr-2"></i> Desistir
                                     </button>
                                 </div>
                             </div>
-                            
+
                             <div class="ancient-paper p-8">
                                 <h2 class="text-2xl font-bold mb-4 magic-font text-center">Histórico de Duelos</h2>
                                 <div class="space-y-3">
@@ -609,7 +678,7 @@
                 </div>
             </div>
         </main>
-        
+
         <footer class="mt-16 pt-8 border-t border-gray-800">
             <div class="flex flex-col md:flex-row justify-between items-center">
                 <div class="mb-4 md:mb-0">
@@ -637,7 +706,7 @@
             </div>
         </footer>
     </div>
-    
+
     <div id="wand-modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 hidden">
         <div class="bg-gray-900 rounded-lg max-w-md w-full p-6 relative border border-purple-500">
             <button id="close-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white">
@@ -655,23 +724,40 @@
             </div>
             <div class="mb-6">
                 <label class="block text-sm font-medium mb-2">Dispositivos disponíveis:</label>
-                <select class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                <select
+                    class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                     <option>SmartWitch Elite (SN: SW-EL-42)</option>
                     <option>WandMaster Pro (SN: WM-PRO-7)</option>
                     <option>MagicalWand X (SN: MW-X-13)</option>
                 </select>
             </div>
             <div class="flex justify-end space-x-3">
-                <button id="cancel-connect" class="px-4 py-2 border border-gray-700 rounded hover:bg-gray-800 transition-colors">
+                <button id="cancel-connect"
+                    class="px-4 py-2 border border-gray-700 rounded hover:bg-gray-800 transition-colors">
                     Cancelar
                 </button>
-                <button id="confirm-connect" class="px-4 py-2 bg-purple-600 rounded hover:bg-purple-700 transition-colors">
+                <button id="confirm-connect"
+                    class="px-4 py-2 bg-purple-600 rounded hover:bg-purple-700 transition-colors">
                     Conectar
                 </button>
             </div>
         </div>
     </div>
-    
+
+    <div id="movement-capture-modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 hidden">
+        <div class="bg-gray-900 rounded-lg max-w-4xl w-full h-3/4 p-6 relative border border-purple-500 flex flex-col">
+            <button id="close-movement-capture-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+            <h3 class="text-xl font-bold mb-4 magic-font text-white">Capturar Movimento da Varinha</h3>
+            <div class="flex-grow">
+                <iframe id="movement-capture-iframe" src="" frameborder="0" class="w-full h-full rounded-md"></iframe>
+            </div>
+            <p class="text-gray-400 text-sm mt-4 text-center">Interaja com o conteúdo do Google Apps Script acima.</p>
+        </div>
+    </div>
+
+
     <script>
         // Dados de exemplo de feitiços
         const allSpells = [
@@ -808,7 +894,7 @@
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('tab-active'));
                 document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
-                
+
                 btn.classList.add('tab-active');
                 const tabId = btn.getAttribute('data-tab');
                 document.getElementById(tabId).classList.remove('hidden');
@@ -818,111 +904,111 @@
                 }
             });
         });
-        
+
         // Wand connection modal
         const connectWandBtn = document.getElementById('connect-wand-btn');
         const wandModal = document.getElementById('wand-modal');
         const closeModal = document.getElementById('close-modal');
         const cancelConnect = document.getElementById('cancel-connect');
-        
+
         connectWandBtn.addEventListener('click', () => {
             wandModal.classList.remove('hidden');
         });
-        
+
         [closeModal, cancelConnect].forEach(btn => {
             btn.addEventListener('click', () => {
                 wandModal.classList.add('hidden');
             });
         });
-        
+
         document.getElementById('confirm-connect').addEventListener('click', () => {
             wandModal.classList.add('hidden');
             connectWandBtn.innerHTML = '<i class="fas fa-check-circle mr-2"></i> Varinha Conectada';
             connectWandBtn.classList.remove('from-purple-600', 'to-pink-600');
             connectWandBtn.classList.add('from-green-600', 'to-green-700');
         });
-        
+
         // Spell casting animation
         function addCastSpellListeners() {
             document.querySelectorAll('.cast-spell-btn').forEach(btn => {
                 btn.onclick = null; // Remove previous listeners to avoid duplicates
-                btn.addEventListener('click', function() {
+                btn.addEventListener('click', function () {
                     const spellCard = this.closest('.spell-card');
                     const spellNameAttr = spellCard.getAttribute('data-spell'); // Use data-spell attribute for anim ID
                     const animElement = document.getElementById(`${spellNameAttr}-anim`);
-                    
+
                     spellCard.classList.add('spell-cast');
-                    
+
                     if (animElement) {
                         animElement.classList.add('active');
                         setTimeout(() => {
                             animElement.classList.remove('active');
                         }, 2000);
                     }
-                    
+
                     setTimeout(() => {
                         spellCard.classList.remove('spell-cast');
                     }, 500);
                 });
             });
         }
-        
+
         // Spell creator preview
         const testSpellBtn = document.getElementById('test-spell-btn');
         const spellEffectPreview = document.getElementById('spell-effect-preview');
-        
-        testSpellBtn.addEventListener('click', function() {
+
+        testSpellBtn.addEventListener('click', function () {
             const effects = [
                 '<div class="w-16 h-16 bg-yellow-300 rounded-full filter blur-xl animate-pulse"></div>',
                 '<div class="w-24 h-1 bg-red-500 rounded-full animate-spark"></div>',
                 '<div class="w-8 h-8 bg-blue-400 rounded-full filter blur-md animate-bounce"></div>'
             ];
-            
+
             const randomEffect = effects[Math.floor(Math.random() * effects.length)];
             spellEffectPreview.innerHTML = randomEffect;
             spellEffectPreview.style.opacity = '1';
-            
+
             const wandPreview = document.getElementById('wand-preview');
             wandPreview.style.animation = 'none';
             void wandPreview.offsetWidth; // Trigger reflow
             wandPreview.style.animation = 'wandCast 0.5s ease-in-out';
-            
+
             setTimeout(() => {
                 spellEffectPreview.style.opacity = '0';
             }, 1500);
         });
-        
+
         // Create particles
         function createParticles() {
             const container = document.body;
             const particleCount = 30;
-            
+
             for (let i = 0; i < particleCount; i++) {
                 const particle = document.createElement('div');
                 particle.classList.add('particle');
-                
+
                 const size = Math.random() * 5 + 1;
                 const posX = Math.random() * window.innerWidth;
                 const posY = Math.random() * window.innerHeight;
                 const delay = Math.random() * 10;
                 const duration = Math.random() * 20 + 10;
                 const opacity = Math.random() * 0.5 + 0.1;
-                
+
                 particle.style.width = `${size}px`;
                 particle.style.height = `${size}px`;
                 particle.style.left = `${posX}px`;
                 particle.style.top = `${posY}px`;
                 particle.style.opacity = opacity;
                 particle.style.animation = `float ${duration}s ease-in-out ${delay}s infinite`;
-                
+
                 const colors = ['#ef7d57', '#b13e53', '#5d2751', '#ffcd75', '#f8f1ff'];
                 const color = colors[Math.floor(Math.random() * colors.length)];
                 particle.style.backgroundColor = color;
-                
+
                 container.appendChild(particle);
             }
         }
-        
+
         // Add floating animation to CSS
         const style = document.createElement('style');
         style.innerHTML += `
@@ -971,7 +1057,7 @@
             }
         `;
         document.head.appendChild(style);
-        
+
         // Initialize particles
         window.addEventListener('load', createParticles);
 
@@ -1027,6 +1113,28 @@
 
         // Initial render
         applySearchAndFilters(); // Initial render of spells and pagination
+
+        // Lógica para abrir a modal do iFrame de Captura de Movimento
+        const openMovementCaptureIframeBtn = document.getElementById('open-movement-capture-iframe-btn');
+        const movementCaptureModal = document.getElementById('movement-capture-modal');
+        const closeMovementCaptureModal = document.getElementById('close-movement-capture-modal');
+        const movementCaptureIframe = document.getElementById('movement-capture-iframe');
+
+        openMovementCaptureIframeBtn.addEventListener('click', () => {
+            // Define o src do iframe com a URL do seu Google Apps Script.
+            // ATENÇÃO: Se o Google Apps Script retornar X-Frame-Options: sameorigin,
+            // esta iframe será bloqueada pelo navegador, a menos que você
+            // modifique o código do Google Apps Script (função doGet())
+            // para incluir .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+            movementCaptureIframe.src = 'movement.html';
+            movementCaptureModal.classList.remove('hidden');
+        });
+
+        closeMovementCaptureModal.addEventListener('click', () => {
+            movementCaptureModal.classList.add('hidden');
+            movementCaptureIframe.src = ''; // Opcional: Limpa o src do iframe ao fechar para parar qualquer processo ou vídeo
+        });
     </script>
 </body>
+
 </html>

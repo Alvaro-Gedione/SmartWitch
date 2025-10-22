@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Captura de Movimento</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400&family=Cormorant+Garamond:wght@400;700&display=swap');
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            height: 100vh; margin: 0; background-color: transparent; color: #f8f1ff; overflow: hidden;
+        }
+        .instructions {
+            margin-bottom: 10px; color: #ccc; text-align: center; font-size: 0.9em;
+        }
+        #drawingCanvas {
+            border: 2px solid #5d2751;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="%23ef7d57" d="M12 2L9.91 8.28 3.5 9.06l4.57 4.5L7.09 20l4.91-2.91L16.91 20l-1-6.44 4.57-4.5-6.41-.78L12 2z"/></svg>') 12 12, crosshair;
+            background-color: rgba(26, 26, 46, 0.8);
+            border-radius: 8px;
+            touch-action: none; /* Essencial para mobile */
+            max-width: 100%;
+        }
+        .controls {
+            margin-top: 15px; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 15px;
+        }
+        button {
+            padding: 8px 18px; font-size: 16px; font-family: 'Cinzel Decorative', cursive; cursor: pointer;
+            border: 1px solid #ef7d57; border-radius: 20px; background-color: transparent; color: #ef7d57; transition: all 0.3s ease;
+        }
+        button:hover:not(:disabled) {
+            background-color: #ef7d57; color: #1a1a2e; box-shadow: 0 0 10px #ef7d57;
+        }
+        button:disabled {
+            cursor: not-allowed; opacity: 0.4; border-color: #555; color: #555;
+        }
+        #timeDisplay {
+            font-size: 16px; font-weight: bold; color: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <p class="instructions">Toque ou clique e arraste para desenhar o movimento.</p>
+    <canvas id="drawingCanvas"></canvas>
+    <div class="controls">
+        <button id="replayButton" disabled>Repetir</button>
+        <button id="saveButton" disabled>Salvar</button>
+        <p id="timeDisplay">Tempo: 0.00s</p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const canvas = document.getElementById('drawingCanvas');
+            const ctx = canvas.getContext('2d');
+            const replayButton = document.getElementById('replayButton');
+            const saveButton = document.getElementById('saveButton');
+            const timeDisplay = document.getElementById('timeDisplay');
+
+            // Ajusta o tamanho do canvas dinamicamente
+            function resizeCanvas() {
+                const container = document.body;
+                canvas.width = container.clientWidth * 0.95;
+                canvas.height = container.clientHeight * 0.70;
+                // Redesenha o estilo do contexto após redimensionar
+                ctx.lineWidth = 4;
+                ctx.lineCap = 'round';
+                ctx.strokeStyle = '#ef7d57';
+                ctx.shadowBlur = 5;
+                ctx.shadowColor = '#ef7d57';
+            }
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+
+            let isCapturing = false;
+            let capturedPoints = [];
+            let startTime, endTime;
+
+            function getPointerPos(event) {
+                const rect = canvas.getBoundingClientRect();
+                const pointer = event.touches ? event.touches[0] : event;
+                return { x: pointer.clientX - rect.left, y: pointer.clientY - rect.top };
+            }
+
+            function startDrawing(event) {
+                event.preventDefault();
+                isCapturing = true;
+                capturedPoints = [];
+                startTime = performance.now();
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                timeDisplay.textContent = 'Tempo: 0.00s';
+                replayButton.disabled = true;
+                saveButton.disabled = true;
+
+                const pos = getPointerPos(event);
+                capturedPoints.push({ x: pos.x, y: pos.y, t: 0 });
+                ctx.beginPath();
+                ctx.moveTo(pos.x, pos.y);
+            }
+
+            function draw(event) {
+                if (!isCapturing) return;
+                event.preventDefault();
+                const pos = getPointerPos(event);
+                const timeElapsed = performance.now() - startTime;
+                capturedPoints.push({ x: pos.x, y: pos.y, t: timeElapsed });
+                ctx.lineTo(pos.x, pos.y);
+                ctx.stroke();
+            }
+
+            function stopDrawing() {
+                if (!isCapturing) return;
+                isCapturing = false;
+                endTime = performance.now();
+                const duration = ((endTime - startTime) / 1000);
+                timeDisplay.textContent = `Tempo: ${duration.toFixed(2)}s`;
+                if (capturedPoints.length > 1) {
+                    replayButton.disabled = false;
+                    saveButton.disabled = false;
+                }
+            }
+
+            canvas.addEventListener('mousedown', startDrawing);
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('mouseup', stopDrawing);
+            canvas.addEventListener('mouseleave', stopDrawing);
+            canvas.addEventListener('touchstart', startDrawing, { passive: false });
+            canvas.addEventListener('touchmove', draw, { passive: false });
+            canvas.addEventListener('touchend', stopDrawing);
+
+            replayButton.addEventListener('click', () => {
+                replayButton.disabled = true;
+                saveButton.disabled = true;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                let i = 0;
+                function animate() {
+                    if (i < capturedPoints.length - 1) {
+                        ctx.beginPath();
+                        ctx.moveTo(capturedPoints[i].x, capturedPoints[i].y);
+                        ctx.lineTo(capturedPoints[i + 1].x, capturedPoints[i + 1].y);
+                        ctx.stroke();
+                        i++;
+                        requestAnimationFrame(animate);
+                    } else {
+                        replayButton.disabled = false;
+                        saveButton.disabled = false;
+                    }
+                }
+                animate();
+            });
+
+            saveButton.addEventListener('click', () => {
+                const duration = (endTime - startTime) / 1000;
+                const message = {
+                    type: 'movementCaptured',
+                    coordinates: capturedPoints,
+                    duration: duration
+                };
+                // Envia os dados para a página principal (a do SmartWitch)
+                google.script.host.close(); // Fecha o modal/dialog
+                google.script.run.withSuccessHandler(() => {}).processMovement(message);
+            });
+        });
+    </script>
+</body>
+</html>
